@@ -1,0 +1,146 @@
+// 1. declare 5 sass variables and use them in rulesets
+$primary-color: blue;
+$secondary-color: black;
+$text-color: #333;
+$font-family: 'Arial', sans-serif;
+$base-margin: 5px;
+
+.button {
+  background-color: $secondary-color;
+  color: $text-color;
+  margin: $base-padding;
+  border: 1px solid $primary-color;
+  font-family: $font-family;
+}
+
+// 2. declare sass nested selectors that will generate this css
+.container .box {
+  background-color: yellow;
+  border: 1px solid black;
+}
+
+.container .box .button {
+  color: green;
+}
+
+.container .box.link {
+  color: blue;
+}
+
+.container .box.link:hover {
+  color: purple;
+}
+
+.container {
+  .box {
+    background-color: yellow;
+    border: 1px solid black;
+    .button{
+      color:green;
+    }
+    &.link{
+      color: blue;
+      &:hover{
+        color:purple;
+      }
+    }
+  }
+}
+
+// 3. declare and apply a mixin that will apply a ruleset to the hover, focus, and active state of a selector
+// example css output
+.example1:hover {
+  color: red;
+}
+
+.example1:focus {
+  color: orange;
+}
+
+.example1:active {
+  color: blue;
+}
+
+.example2:hover {
+  color: red;
+}
+
+.example2:focus {
+  color: orange;
+}
+
+.example2:active {
+  color: blue;
+}
+
+@mixin color-change{
+  &:hover{
+    color: red;
+  }
+  &:focus{
+    color: orange;
+  }
+  &:active{
+    color: blue;
+  }
+}
+
+.example1{
+  @include color-change;
+}
+
+.example2{
+  @include color-change;
+}
+
+// 4. declare and apply a mixin that will apply a ruleset to the hover, focus, and active state of a selector with the values from a parameter
+// example css output
+.example1:hover {
+  color: red;
+}
+
+.example1:focus {
+  color: red;
+}
+
+.example1:active {
+  color: red;
+}
+
+@mixin selectors-color($hover-color, $focus-color, $active-color){
+  &:hover{
+    color: $hover-color
+  }
+  &:focus{
+    color: $focus-color
+  }
+  &:active {
+    color: $active-color;
+  }
+}
+// example css output
+.example1{
+ @include selectors-color(red, blue, green)
+}
+
+// 5. write a function that will return 50% if the parameter passed in is red and 100% if the parameter is blue, and 0% if anything else
+
+@function percent($color) {
+  @if $color == red {
+    @return 50%;
+  } @else if $color == blue {
+    @return 100%;
+  } @else {
+    @return 0%;
+  }
+}
+
+// 6. write a loop that will generate .col-md-X selectors where X is a number from 1-12 and the ruleset of each selector is width: Y% where Y is 100/(12/X)
+
+@for $i from 1 through 12 {
+  .col-md-#{$i} [
+    width: calc(100/calc(8.33/$i));
+  ]
+}
+
+// 7. write a function that errors if the parameter passed in is 100%, warn if 50%, and debug if 0%
